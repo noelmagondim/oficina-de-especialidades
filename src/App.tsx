@@ -3,6 +3,7 @@ import Header from "./components/header";
 import Footer from "./components/footer";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
+import RegistrationPage from './pages/RegistrationPage';
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/registration" element={<RegistrationPage />} /> 
           </Routes>
         </main>
 
