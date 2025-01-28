@@ -7,6 +7,12 @@
   background-color: #2563eb; /* bg-blue-600 */
   color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10; /* Garantir que o header fique acima de outros elementos */
+  height: 80px; /* Altura fixa para o header */
+  box-sizing: border-box; /* Para garantir que o padding seja incluído na altura total */
 }
 
 /* Logo do site */
@@ -34,8 +40,4 @@
   text-decoration: none;
   color: white;
   transition: color 0.3s ease;
-}
-
-.nav-link:hover {
-  color: #fbbf24; /* hover:bg-yellow-400 */
 }

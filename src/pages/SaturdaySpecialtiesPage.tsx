@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '/src/styles/SaturdaySpecialtiesPage.css'; // Importando o arquivo CSS
+import '/src/styles/SaturdaySpecialtiesPage.css'; 
 
 type Specialty = {
   name: string;

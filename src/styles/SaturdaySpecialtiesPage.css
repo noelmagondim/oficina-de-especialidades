@@ -3,18 +3,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
+  justify-content: flex-start;
+  min-height: calc(100vh - 80px);
   background-color: #f7fafc; /* bg-gray-100 */
+  padding-bottom: 80px;
 }
 
 /* Título */
 .title {
-  margin-top: 10rem; /* Alinha o título abaixo do Header */
-  font-size: 2rem; /* Ajuste o tamanho do texto conforme necessário */
-  font-weight: 700; /* Fica mais chamativo */
-  text-align: center; /* Centraliza o título */
-  color: #333; /* Cor escura para o título */
+  margin-top: 5rem; /* Ajuste para que o título não fique muito abaixo do topo */
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #333;
 }
 
 /* Grid de especialidades */

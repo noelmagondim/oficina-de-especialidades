@@ -1,0 +1,23 @@
+/* Adicionando este estilo ao body ou ao container principal para garantir que o footer fique no final da página */
+body, html {
+  height: 100%;
+}
+
+.page-container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1; /* Faz o conteúdo ocupar o espaço restante */
+}
+
+.footer {
+  background-color: #2d3748;  /* Fundo escuro */
+  color: white;               /* Cor do texto */
+  padding: 1.5rem 0;          /* Espaçamento vertical */
+  text-align: center;         /* Alinha o texto centralizado */
+  font-size: 0.875rem;        /* Tamanho da fonte */
+  position: relative; 
+}
