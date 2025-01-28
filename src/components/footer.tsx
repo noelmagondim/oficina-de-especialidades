@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
 
       <footer className="footer">
         {/* Informações de Copyright */}
-        <p>&copy; 2025 Quarta Região de Desbravadores. Todos os direitos reservados.</p>
+        <p>&copy; 2025 4ª Região de Desbravadores. Todos os direitos reservados.</p>
       </footer>
     </div>
   );

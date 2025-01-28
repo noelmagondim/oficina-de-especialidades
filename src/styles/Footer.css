@@ -1,6 +1,7 @@
-/* Adicionando este estilo ao body ou ao container principal para garantir que o footer fique no final da página */
+/* Garantir que o footer fique no final da página */
 body, html {
   height: 100%;
+  margin: 0;
 }
 
 .page-container {
@@ -16,8 +17,16 @@ body, html {
 .footer {
   background-color: #2d3748;  /* Fundo escuro */
   color: white;               /* Cor do texto */
-  padding: 1.5rem 0;          /* Espaçamento vertical */
-  text-align: center;         /* Alinha o texto centralizado */
+  padding: 1.5rem 1rem;       /* Espaçamento vertical e ajuste lateral */
+  text-align: center;         /* Centraliza o texto */
   font-size: 0.875rem;        /* Tamanho da fonte */
-  position: relative; 
+  position: relative;         /* Garante que o footer fique alinhado */
+}
+
+/* Estilização responsiva */
+@media (max-width: 768px) {
+  .footer {
+    font-size: 0.8rem;        /* Reduz o tamanho da fonte em telas menores */
+    padding: 1rem 0.5rem;     /* Ajusta o espaçamento em telas menores */
+  }
 }

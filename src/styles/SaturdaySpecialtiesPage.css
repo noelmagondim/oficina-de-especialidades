@@ -6,16 +6,23 @@
   justify-content: flex-start;
   min-height: calc(100vh - 80px);
   background-color: #f7fafc; /* bg-gray-100 */
+  padding: 1rem; /* Ajuste para telas menores */
   padding-bottom: 80px;
 }
 
 /* Título */
 .title {
   margin-top: 5rem; /* Ajuste para que o título não fique muito abaixo do topo */
-  font-size: 2rem;
+  font-size: 1.5rem; /* Tamanho ajustado para dispositivos móveis */
   font-weight: 700;
   text-align: center;
   color: #333;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 2rem; /* Tamanho maior para telas maiores */
+  }
 }
 
 /* Grid de especialidades */
@@ -27,9 +34,15 @@
   max-width: 56rem; /* max-w-4xl */
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
   .specialties-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Duas colunas em telas médias */
+  }
+}
+
+@media (min-width: 1024px) {
+  .specialties-grid {
+    grid-template-columns: repeat(3, 1fr); /* Três colunas em telas maiores */
   }
 }
 
@@ -43,9 +56,15 @@
 
 /* Nome da especialidade */
 .specialty-name {
-  font-size: 1.25rem; /* text-xl */
+  font-size: 1.125rem; /* text-lg */
   font-weight: 600; /* font-semibold */
   margin-bottom: 1rem; /* mb-4 */
+}
+
+@media (min-width: 768px) {
+  .specialty-name {
+    font-size: 1.25rem; /* text-xl */
+  }
 }
 
 /* Botões de horário */
@@ -80,13 +99,20 @@
   margin-top: 2rem; /* mt-8 */
   width: 100%;
   max-width: 56rem; /* max-w-4xl */
+  padding: 0 1rem; /* Adicionado para telas menores */
 }
 
 /* Título das seleções */
 .selected-title {
-  font-size: 1.5rem; /* text-2xl */
+  font-size: 1.25rem; /* text-xl */
   font-weight: 600; /* font-semibold */
   margin-bottom: 1rem; /* mb-4 */
+}
+
+@media (min-width: 768px) {
+  .selected-title {
+    font-size: 1.5rem; /* text-2xl */
+  }
 }
 
 /* Lista de seleções */
@@ -119,9 +145,11 @@
   background-color: #c53030; /* bg-red-700 */
 }
 
+/* Botão de envio */
 .submit-button {
   padding: 0.75rem 1.5rem; /* px-6 py-3 */
-  width: 56rem;
+  width: 100%;
+  max-width: 56rem; /* max-w-4xl */
   margin-top: 30px;
   border-radius: 0.5rem;
 }
