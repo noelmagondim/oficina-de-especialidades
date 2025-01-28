@@ -5,7 +5,10 @@ import '/src/styles/RegistrationPage.css'; // Importando o arquivo CSS externo
 const RegistrationPage: React.FC = () => {
   const [formData, setFormData] = useState({
     fullName: '',
+    email: '',
+    phone: '',
     age: '',
+    district: '',
     club: '',
   });
 
@@ -19,6 +22,14 @@ const RegistrationPage: React.FC = () => {
   const handleNext = () => {
     navigate('/saturdaySpecialties');
   };
+
+  const districts = [
+    { name: "Alto da Conceição", clubs: ["A", "B", "C"] },
+    { name: "Central", clubs: ["D", "E", "F", "G"] },
+    { name: "Cohab", clubs: ["H", "I", "J", "K", "L"] },
+  ];
+
+  const selectedDistrict = districts.find((d) => d.name === formData.district);
 
   return (
     <div className="registration-container">
@@ -35,6 +46,26 @@ const RegistrationPage: React.FC = () => {
           />
         </div>
         <div className="form-group">
+          <label className="label">E-mail</label>
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="input"
+          />
+        </div>
+        <div className="form-group">
+          <label className="label">Telefone</label>
+          <input
+            type="tel"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="input"
+          />
+        </div>
+        <div className="form-group">
           <label className="label">Idade</label>
           <input
             type="number"
@@ -45,15 +76,42 @@ const RegistrationPage: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <label className="label">Clube</label>
-          <input
-            type="text"
+          <label htmlFor="district" className="label">Distrito</label>
+          <select
+            id="district"
+            name="district"
+            value={formData.district}
+            onChange={handleChange}
+            className="input"
+          >
+            <option value="">Selecione seu distrito</option>
+            {districts.map((district) => (
+              <option key={district.name} value={district.name}>
+                {district.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {selectedDistrict && (
+          <div className="form-group">
+          <label htmlFor="club" className="label">Clube</label>
+          <select
+            id="club"
             name="club"
             value={formData.club}
             onChange={handleChange}
             className="input"
-          />
+          >
+            <option value="">Selecione seu Clube</option>
+            {selectedDistrict.clubs.map((club) => (
+            <option key={club} value={club}>
+              {club}
+            </option>
+          ))}
+          </select>
         </div>
+        )}
         <button
           type="button"
           onClick={handleNext}
