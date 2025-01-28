@@ -6,7 +6,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="home-container">
-      <h1 className="title">Bem-vindo ao Site de Inscrição da Feira de Especialidades 2025.1!</h1>
+      <h1 className="title">Realize sua inscrição aqui!</h1>
       <p className="description">Inscreva-se para participar</p>
       <button
         onClick={() => navigate('/registration')}
