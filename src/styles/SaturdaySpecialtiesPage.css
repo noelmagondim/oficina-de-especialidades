@@ -10,9 +10,11 @@
 
 /* Título */
 .title {
-  font-size: 1.875rem; /* text-3xl */
-  font-weight: 700; /* font-bold */
-  margin-bottom: 1.5rem; /* mb-6 */
+  margin-top: 10rem; /* Alinha o título abaixo do Header */
+  font-size: 2rem; /* Ajuste o tamanho do texto conforme necessário */
+  font-weight: 700; /* Fica mais chamativo */
+  text-align: center; /* Centraliza o título */
+  color: #333; /* Cor escura para o título */
 }
 
 /* Grid de especialidades */
