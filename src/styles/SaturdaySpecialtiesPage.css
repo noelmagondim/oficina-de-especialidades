@@ -1,0 +1,117 @@
+/* Contêiner principal */
+.specialties-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f7fafc; /* bg-gray-100 */
+}
+
+/* Título */
+.title {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700; /* font-bold */
+  margin-bottom: 1.5rem; /* mb-6 */
+}
+
+/* Grid de especialidades */
+.specialties-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem; /* gap-6 */
+  width: 100%;
+  max-width: 56rem; /* max-w-4xl */
+}
+
+@media (min-width: 768px) {
+  .specialties-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Cartão de especialidade */
+.specialty-card {
+  padding: 1rem; /* p-4 */
+  background-color: white;
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+}
+
+/* Nome da especialidade */
+.specialty-name {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 600; /* font-semibold */
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+/* Botões de horário */
+.time-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; /* space-y-2 */
+}
+
+.time-button {
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  border-radius: 0.375rem; /* rounded-md */
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.time-button.active {
+  background-color: #2563eb; /* bg-blue-600 */
+}
+
+.time-button.active:hover {
+  background-color: #1d4ed8; /* bg-blue-700 */
+}
+
+.time-button.disabled {
+  background-color: #e2e8f0; /* bg-gray-400 */
+  cursor: not-allowed;
+}
+
+/* Contêiner de seleções */
+.selected-container {
+  margin-top: 2rem; /* mt-8 */
+  width: 100%;
+  max-width: 56rem; /* max-w-4xl */
+}
+
+/* Título das seleções */
+.selected-title {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 600; /* font-semibold */
+  margin-bottom: 1rem; /* mb-4 */
+}
+
+/* Lista de seleções */
+.selected-list {
+  list-style-type: none;
+  padding-left: 0;
+  gap: 0.5rem; /* space-y-2 */
+}
+
+/* Item de seleção */
+.selected-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem; /* p-2 */
+  background-color: #edf2f7; /* bg-gray-200 */
+  border-radius: 0.375rem; /* rounded-md */
+}
+
+/* Botão de remover */
+.remove-button {
+  padding: 0.25rem 0.75rem; /* px-4 py-1 */
+  background-color: #e53e3e; /* bg-red-600 */
+  color: white;
+  border-radius: 0.375rem; /* rounded-md */
+  transition: background-color 0.3s ease;
+}
+
+.remove-button:hover {
+  background-color: #c53030; /* bg-red-700 */
+}
