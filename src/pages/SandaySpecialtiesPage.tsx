@@ -67,7 +67,25 @@ const SandaySpecialtiesPage: React.FC = () => {
     navigate('/saturdaySpecialties');
   };
 
-  const handleNext = () => {
+    // Função para gerar um código único de confirmação
+    const generateConfirmationCode = () => {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let code = '';
+      for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        code += characters[randomIndex];
+      }
+      return code;
+    };
+  
+    const handleSubmit = () => {
+      // Gera o código de confirmação
+      const code = generateConfirmationCode();
+      
+      // Salva o código no localStorage para acessá-lo na página 4
+      localStorage.setItem('confirmationCode', code);
+      
+    // Navega para a página 4
     navigate('/confirmationPage');
   };
 
@@ -126,7 +144,7 @@ const SandaySpecialtiesPage: React.FC = () => {
       <button
           type="button"
           className="submit-button"
-          onClick={handleNext}
+          onClick={handleSubmit}
         >
           Enviar
         </button>

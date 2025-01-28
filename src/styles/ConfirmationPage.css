@@ -1,3 +1,104 @@
-.title {
-  margin-top: 0rem;
-};
+/* Container principal da página de confirmação */
+.confirmation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Ajusta a altura mínima para cobrir a tela */
+  background-color: #f7fafc; /* Cor de fundo suave */
+  padding: 1rem; /* Espaçamento em dispositivos menores */
+}
+
+h1 {
+  font-size: 1.875rem; /* Tamanho da fonte para o título */
+  font-weight: 700; /* Negrito */
+  color: #2d3748; /* Cor do texto */
+  margin-bottom: 1.5rem; /* Espaço abaixo do título */
+  text-align: center; /* Alinha o título ao centro */
+}
+
+p {
+  font-size: 1.125rem; /* Tamanho da fonte para o parágrafo */
+  color: #4a5568; /* Cor do texto */
+  text-align: center; /* Alinha o texto ao centro */
+  margin: 1rem 0; /* Espaçamento superior e inferior */
+  line-height: 1.5; /* Espaçamento entre as linhas */
+}
+
+strong {
+  font-weight: 700; /* Negrito para o código de confirmação */
+  color: #2563eb; /* Cor do código de confirmação */
+}
+
+.submit-button {
+  margin-top: 2rem; /* Espaçamento superior para o botão */
+  padding: 0.75rem 1.5rem; /* Tamanho do botão */
+  background-color: #2563eb; /* Cor de fundo do botão */
+  color: white; /* Cor do texto do botão */
+  border-radius: 0.375rem; /* Borda arredondada */
+  border: none; /* Remove a borda padrão */
+  cursor: pointer; /* Aponta a mãozinha */
+  transition: background-color 0.3s; /* Transição suave para a cor ao passar o mouse */
+  text-align: center;
+}
+
+.submit-button:hover {
+  background-color: #1d4ed8; /* Cor do botão ao passar o mouse */
+}
+
+/* Responsividade para telas pequenas (móveis) */
+@media (max-width: 480px) {
+  .confirmation-container {
+    padding: 1.5rem; /* Aumenta o espaçamento para telas pequenas */
+  }
+
+  h1 {
+    font-size: 1.5rem; /* Ajusta o tamanho do título */
+  }
+
+  p {
+    font-size: 1rem; /* Ajusta o tamanho da fonte do parágrafo */
+  }
+
+  .submit-button {
+    width: 100%; /* Botão ocupa toda a largura */
+  }
+}
+
+/* Responsividade para tablets e telas médias */
+@media (min-width: 481px) and (max-width: 768px) {
+  .confirmation-container {
+    padding: 1.5rem; /* Aumenta o espaçamento para telas médias */
+  }
+
+  h1 {
+    font-size: 1.75rem; /* Ajusta o título para telas médias */
+  }
+
+  p {
+    font-size: 1.125rem; /* Ajusta o tamanho do parágrafo */
+  }
+
+  .submit-button {
+    width: 80%; /* Botão ocupa 80% da largura */
+  }
+}
+
+/* Responsividade para desktops */
+@media (min-width: 769px) {
+  .confirmation-container {
+    padding: 2rem; /* Aumenta o espaçamento para telas grandes */
+  }
+
+  h1 {
+    font-size: 2rem; /* Ajusta o tamanho do título */
+  }
+
+  p {
+    font-size: 1.25rem; /* Ajusta o tamanho do parágrafo */
+  }
+
+  .submit-button {
+    width: 60%; /* Botão ocupa 60% da largura */
+  }
+}
