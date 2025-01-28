@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import '/src/styles/SaturdaySpecialtiesPage.css'; 
+import '/src/styles/SaturdaySpecialtiesPage.css';
+import { useNavigate } from 'react-router-dom';
 
 type Specialty = {
   name: string;
@@ -60,6 +61,11 @@ const SandaySpecialtiesPage: React.FC = () => {
     }
   };
 
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate('/saturdaySpecialties');
+  }
+
   return (
     <div className="specialties-container">
       <h1 className="title">Selecione as Especialidades do Domingo</h1>
@@ -105,6 +111,13 @@ const SandaySpecialtiesPage: React.FC = () => {
           <p>Nenhuma especialidade selecionada ainda.</p>
         )}
       </div>
+      <button
+          type="button"
+          className="submit-button"
+          onClick={handleBack}
+        >
+          Voltar
+        </button>
       <button
           type="button"
           className="submit-button"
