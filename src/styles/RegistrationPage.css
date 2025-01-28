@@ -77,3 +77,13 @@
     width: 33.3333%; /* w-1/3 para desktops */
   }
 }
+
+.input-error {
+  border-color: red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.75rem; /* text-xs */
+  margin-top: 0.25rem; /* mt-1 */
+}
