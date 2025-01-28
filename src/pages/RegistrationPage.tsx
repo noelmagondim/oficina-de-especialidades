@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '/src/styles/RegistrationPage.css'; // Importando o arquivo CSS externo
 
 const RegistrationPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -20,43 +21,43 @@ const RegistrationPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold mb-6">Formulário de Inscrição</h1>
-      <form className="w-1/3 bg-white p-6 rounded-lg shadow-md">
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Nome Completo</label>
+    <div className="registration-container">
+      <h1 className="title">Formulário de Inscrição</h1>
+      <form className="form-container">
+        <div className="form-group">
+          <label className="label">Nome Completo</label>
           <input
             type="text"
             name="fullName"
             value={formData.fullName}
             onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-md"
+            className="input"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Idade</label>
+        <div className="form-group">
+          <label className="label">Idade</label>
           <input
             type="number"
             name="age"
             value={formData.age}
             onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-md"
+            className="input"
           />
         </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">Clube</label>
+        <div className="form-group">
+          <label className="label">Clube</label>
           <input
             type="text"
             name="club"
             value={formData.club}
             onChange={handleChange}
-            className="w-full mt-1 p-2 border rounded-md"
+            className="input"
           />
         </div>
         <button
           type="button"
           onClick={handleNext}
-          className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          className="submit-button"
         >
           Próximo
         </button>
