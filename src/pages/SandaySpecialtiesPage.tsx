@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import '/src/styles/SaturdaySpecialtiesPage.css'; 
-import { useNavigate } from 'react-router-dom';
 
 type Specialty = {
   name: string;
@@ -8,13 +7,13 @@ type Specialty = {
 };
 
 const specialtiesData: Specialty[] = [
-  { name: 'Especialidade 1', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
-  { name: 'Especialidade 2', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
-  { name: 'Especialidade 3', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
-  { name: 'Especialidade 4', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
+  { name: 'Especialidade 5', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
+  { name: 'Especialidade 6', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
+  { name: 'Especialidade 7', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
+  { name: 'Especialidade 8', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
 ];
 
-const SaturdaySpecialtiesPage: React.FC = () => {
+const SandaySpecialtiesPage: React.FC = () => {
   const [selectedSlots, setSelectedSlots] = useState<{ specialty: string; time: string }[]>([]);
   const [availableSlots, setAvailableSlots] = useState<Specialty[]>([...specialtiesData]);
 
@@ -61,15 +60,9 @@ const SaturdaySpecialtiesPage: React.FC = () => {
     }
   };
 
-  const navigate = useNavigate();
-
-  const handleNext = () => {
-    navigate('/sandaySpecialties');
-  };
-
   return (
     <div className="specialties-container">
-      <h1 className="title">Selecione as Especialidades do Sábado</h1>
+      <h1 className="title">Selecione as Especialidades do Domingo</h1>
       <div className="specialties-grid">
         {specialtiesData.map((specialty) => (
           <div key={specialty.name} className="specialty-card">
@@ -114,13 +107,12 @@ const SaturdaySpecialtiesPage: React.FC = () => {
       </div>
       <button
           type="button"
-          onClick={handleNext}
           className="submit-button"
         >
-          Próximo
+          Enviar
         </button>
     </div>
   );
 };
 
-export default SaturdaySpecialtiesPage;
+export default SandaySpecialtiesPage;
