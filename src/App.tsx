@@ -4,6 +4,7 @@ import Footer from "./components/footer";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import RegistrationPage from './pages/RegistrationPage';
+import SaturdaySpecialtiesPage from './pages/SaturdaySpecialtiesPage';
 
 const App: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/registration" element={<RegistrationPage />} /> 
+            <Route path="/saturdaySpecialties" element={<SaturdaySpecialtiesPage />} />
           </Routes>
         </main>
 

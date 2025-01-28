@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RegistrationPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -7,14 +8,15 @@ const RegistrationPage: React.FC = () => {
     club: '',
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   const handleNext = () => {
-    console.log('Form Data:', formData);
-    // Navegação futura aqui
+    navigate('/saturdaySpecialties');
   };
 
   return (
