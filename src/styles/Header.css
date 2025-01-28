@@ -1,0 +1,41 @@
+/* Contêiner principal do header */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem; /* p-6 */
+  background-color: #2563eb; /* bg-blue-600 */
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo do site */
+.logo-text {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700; /* font-bold */
+  text-transform: uppercase;
+  text-decoration: none;
+  color: white;
+}
+
+.logo-link {
+  text-decoration: none;
+}
+
+/* Navegação */
+.navigation {
+  display: flex;
+  gap: 2rem; /* space-x-8 */
+}
+
+.nav-link {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 500; /* font-medium */
+  text-decoration: none;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #fbbf24; /* hover:bg-yellow-400 */
+}
