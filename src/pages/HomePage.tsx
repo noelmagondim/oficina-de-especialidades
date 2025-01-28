@@ -1,19 +1,20 @@
 import { useNavigate } from "react-router-dom";
+import "/src/styles/HomePage.css"
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100 text-center">
-    <h1 className="text-4xl font-bold mb-4">Bem-vindo ao Site de Inscrição da Feira de Especialidades 2025.1!</h1>
-    <p className="text-lg mb-6">Inscreva-se para participar</p>
-    <button
-      onClick={() => navigate('/registration')}
-      className="px-6 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700"
-    >
-      Iniciar Inscrição
-    </button>
-  </div>
+    <div className="home-container">
+      <h1 className="title">Bem-vindo ao Site de Inscrição da Feira de Especialidades 2025.1!</h1>
+      <p className="description">Inscreva-se para participar</p>
+      <button
+        onClick={() => navigate('/registration')}
+        className="signup-button"
+      >
+        Iniciar Inscrição
+      </button>
+    </div>
   );
 };
 
