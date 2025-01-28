@@ -62,9 +62,14 @@ const SandaySpecialtiesPage: React.FC = () => {
   };
 
   const navigate = useNavigate();
+  
   const handleBack = () => {
     navigate('/saturdaySpecialties');
-  }
+  };
+
+  const handleNext = () => {
+    navigate('/confirmationPage');
+  };
 
   return (
     <div className="specialties-container">
@@ -121,6 +126,7 @@ const SandaySpecialtiesPage: React.FC = () => {
       <button
           type="button"
           className="submit-button"
+          onClick={handleNext}
         >
           Enviar
         </button>

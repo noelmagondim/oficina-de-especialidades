@@ -112,10 +112,11 @@ const RegistrationPage: React.FC = () => {
           </select>
         </div>
         )}
+        
         <button
           type="button"
           onClick={handleNext}
-          className="submit-button"
+          className="submit"
         >
           Próximo
         </button>

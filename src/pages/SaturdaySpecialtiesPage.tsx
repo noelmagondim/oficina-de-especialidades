@@ -67,6 +67,10 @@ const SaturdaySpecialtiesPage: React.FC = () => {
     navigate('/sandaySpecialties');
   };
 
+  const handleBack = () => {
+    navigate('/registration');
+  };
+
   return (
     <div className="specialties-container">
       <h1 className="title">Selecione as Especialidades do Sábado</h1>
@@ -112,6 +116,13 @@ const SaturdaySpecialtiesPage: React.FC = () => {
           <p>Nenhuma especialidade selecionada ainda.</p>
         )}
       </div>
+      <button
+          type="button"
+          onClick={handleBack}
+          className="submit-button"
+        >
+          Voltar
+        </button>
       <button
           type="button"
           onClick={handleNext}

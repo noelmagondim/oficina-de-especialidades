@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 import RegistrationPage from './pages/RegistrationPage';
 import SaturdaySpecialtiesPage from './pages/SaturdaySpecialtiesPage';
 import SandaySpecialtiesPage from './pages/SandaySpecialtiesPage';
+import ConfirmationPage from './pages/ConfirmationPage';
 
 const App: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ const App: React.FC = () => {
             <Route path="/registration" element={<RegistrationPage />} /> 
             <Route path="/saturdaySpecialties" element={<SaturdaySpecialtiesPage />} />
             <Route path="/sandaySpecialties" element={<SandaySpecialtiesPage />} />
+            <Route path="/confirmationPage" element={<ConfirmationPage />} />
           </Routes>
         </main>
 
