@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '/src/styles/ConfirmationPage.css';
+import { jsPDF } from 'jspdf';
 
 const ConfirmationPage: React.FC = () => {
   const [confirmationCode, setConfirmationCode] = useState<string | null>(null);
@@ -15,6 +16,40 @@ const ConfirmationPage: React.FC = () => {
     setSaturdaySpecialties(JSON.parse(localStorage.getItem('saturdaySpecialties') || '[]'));
     setSundaySpecialties(JSON.parse(localStorage.getItem('sundaySpecialties') || '[]'));
   }, []);
+
+  const handleDownloadPDF = () => {
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text('Confirmação de Inscrição', 20, 20);
+    
+    doc.setFontSize(12);
+    doc.text(`Nome: ${fullName || "Não informado"}`, 20, 30);
+    doc.text(`Clube: ${club || "Não informado"}`, 20, 40);
+    doc.text(`Código de Confirmação: ${confirmationCode || "Não informado"}`, 20, 50);
+
+    doc.text('Especialidades Escolhidas:', 20, 60);
+    let yOffset = 70;
+    
+    if (saturdaySpecialties.length > 0) {
+      doc.text('Sábado:', 20, yOffset);
+      yOffset += 10;
+      saturdaySpecialties.forEach((spec) => {
+        doc.text(`${spec.name} - ${spec.time}`, 20, yOffset);
+        yOffset += 10;
+      });
+    }
+    
+    if (sundaySpecialties.length > 0) {
+      doc.text('Domingo:', 20, yOffset);
+      yOffset += 10;
+      sundaySpecialties.forEach((spec) => {
+        doc.text(`${spec.name} - ${spec.time}`, 20, yOffset);
+        yOffset += 10;
+      })
+    }
+      doc.save('cartao_confirmacao.pdf'); // Gera o PDF e faz o download
+    }
 
   return (
     <div className="confirmation-container">
@@ -46,6 +81,13 @@ const ConfirmationPage: React.FC = () => {
           </li>
         )}
       </ul>
+
+      <button
+        onClick={handleDownloadPDF}
+        className="download-pdf-button"
+      >
+        Baixar Cartão de Confirmação
+      </button>
     </div>
   );
 };

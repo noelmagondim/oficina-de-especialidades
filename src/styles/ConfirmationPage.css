@@ -72,3 +72,17 @@
     font-size: 18px;
   }
 }
+
+.download-pdf-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.download-pdf-button:hover {
+  background-color: #45a049;
+}
