@@ -15,12 +15,12 @@ const specialtiesData: Specialty[] = [
 ];
 
 const SandaySpecialtiesPage: React.FC = () => {
-  const [selectedSlots, setSelectedSlots] = useState<{ specialty: string; time: string }[]>([]);
+  const [selectedSlots, setSelectedSlots] = useState<{ name: string; time: string }[]>([]);
   const [availableSlots, setAvailableSlots] = useState<Specialty[]>([...specialtiesData]);
 
   const handleSelect = (specialty: string, time: string) => {
     // Verificar se a especialidade já foi selecionada
-    const isSpecialtySelected = selectedSlots.some((slot) => slot.specialty === specialty);
+    const isSpecialtySelected = selectedSlots.some((slot) => slot.name === specialty);
     if (isSpecialtySelected) {
       alert(`Você já selecionou um horário para ${specialty}.`);
       return;
@@ -40,7 +40,7 @@ const SandaySpecialtiesPage: React.FC = () => {
     }
 
     // Atualizar o estado de seleção
-    setSelectedSlots([...selectedSlots, { specialty: specialty, time }]);
+    setSelectedSlots([...selectedSlots, { name: specialty, time }]);
 
     // Atualizar o estado de vagas
     const updatedSlots = [...availableSlots];
@@ -50,7 +50,7 @@ const SandaySpecialtiesPage: React.FC = () => {
 
   const handleRemove = (specialty: string, time: string) => {
     // Remover a seleção
-    setSelectedSlots(selectedSlots.filter((slot) => !(slot.specialty === specialty && slot.time === time)));
+    setSelectedSlots(selectedSlots.filter((slot) => !(slot.name === specialty && slot.time === time)));
 
     // Repor a vaga
     const specialtyData = availableSlots.findIndex((s) => s.name === specialty);
@@ -80,6 +80,8 @@ const SandaySpecialtiesPage: React.FC = () => {
   
     const handleSubmit = () => {
       // Gera o código de confirmação
+      localStorage.setItem('sundaySpecialties', JSON.stringify(selectedSlots));
+
       const code = generateConfirmationCode();
       
       // Salva o código no localStorage para acessá-lo na página 4
@@ -98,7 +100,7 @@ const SandaySpecialtiesPage: React.FC = () => {
             <h2 className="specialty-name">{specialty.name}</h2>
             <div className="time-buttons">
               {Object.keys(specialty.slots).map((time) => {
-                const isSpecialtySelected = selectedSlots.some((slot) => slot.specialty === specialty.name);
+                const isSpecialtySelected = selectedSlots.some((slot) => slot.name === specialty.name);
                 return (
                   <button
                     key={time}
@@ -120,9 +122,9 @@ const SandaySpecialtiesPage: React.FC = () => {
           <ul className="selected-list">
             {selectedSlots.map((slot, index) => (
               <li key={index} className="selected-item">
-                <span>{slot.specialty} às {slot.time}</span>
+                <span>{slot.name} às {slot.time}</span>
                 <button
-                  onClick={() => handleRemove(slot.specialty, slot.time)}
+                  onClick={() => handleRemove(slot.name, slot.time)}
                   className="remove-button"
                 >
                   Remover

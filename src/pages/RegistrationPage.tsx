@@ -41,6 +41,8 @@ const RegistrationPage: React.FC = () => {
   };
 
   const handleNext = () => {
+    localStorage.setItem('fullName', formData.fullName);
+    localStorage.setItem('club', formData.club);
     const newErrors = {
       fullName: formData.fullName.trim() === '',
       email: !validateEmail(formData.email),
