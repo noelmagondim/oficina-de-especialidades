@@ -61,9 +61,9 @@ const RegistrationPage: React.FC = () => {
   };
 
   const districts = [
-    { name: "Alto da Conceição", clubs: ["A", "B", "C"] },
-    { name: "Central", clubs: ["D", "E", "F", "G"] },
-    { name: "Cohab", clubs: ["H", "I", "J", "K", "L"] },
+    { name: "Alto da Conceição", clubs: ["Águia Real", "Arautos do Advento", "Nova Jerusalém"] },
+    { name: "Central", clubs: ["Felinos", "Leão de Judá", "Pena Inspirada", "Tribo de Judá"] },
+    { name: "Cohab", clubs: ["Exército de Deus", "Filhos do Altíssimo", "Filhos de Israel", "Fortaleza Suprema", "Guerreiros do Altíssimo", "Guerreiros do Alto", "Kerygma", "Valentes da Serra", "Rocha Firme"] },
   ];
 
   const selectedDistrict = districts.find((d) => d.name === formData.district);

@@ -82,7 +82,7 @@ const SaturdaySpecialtiesPage: React.FC = () => {
             <h2 className="specialty-name">{specialty.name}</h2>
             <div className="time-buttons">
               {Object.keys(specialty.slots).map((time) => {
-                const isSpecialtySelected = selectedSlots.some((slot) => slot.specialty === specialty.name);
+                const isSpecialtySelected = selectedSlots.some((slot) => slot.name === specialty.name);
                 return (
                   <button
                     key={time}
