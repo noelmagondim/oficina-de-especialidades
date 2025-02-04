@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InputMask from 'react-input-mask'; // Importando react-input-mask
-import '/src/styles/RegistrationPage.css';
+import '../styles/RegistrationPage.css';
 
 const RegistrationPage: React.FC = () => {
   const [formData, setFormData] = useState({

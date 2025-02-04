@@ -1,4 +1,4 @@
-import '/src/styles/Footer.css'; // Importe o arquivo CSS
+import '../styles/Footer.css'; // Importe o arquivo CSS
 
 const Footer: React.FC = () => {
   return (

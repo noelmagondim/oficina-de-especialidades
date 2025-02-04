@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '/src/styles/ConfirmationPage.css';
+import '../styles/ConfirmationPage.css';
 import { jsPDF } from 'jspdf';
 
 const ConfirmationPage: React.FC = () => {

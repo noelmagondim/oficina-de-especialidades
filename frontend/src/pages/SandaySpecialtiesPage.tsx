@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '/src/styles/SaturdaySpecialtiesPage.css'; 
+import '../styles/SaturdaySpecialtiesPage.css';
 import { useNavigate } from 'react-router-dom';
 
 type Specialty = {
@@ -8,13 +8,13 @@ type Specialty = {
 };
 
 const specialtiesData: Specialty[] = [
-  { name: 'Especialidade 1', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
-  { name: 'Especialidade 2', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
-  { name: 'Especialidade 3', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
-  { name: 'Especialidade 4', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
+  { name: 'Especialidade 5', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
+  { name: 'Especialidade 6', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
+  { name: 'Especialidade 7', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
+  { name: 'Especialidade 8', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
 ];
 
-const SaturdaySpecialtiesPage: React.FC = () => {
+const SandaySpecialtiesPage: React.FC = () => {
   const [selectedSlots, setSelectedSlots] = useState<{ name: string; time: string }[]>([]);
   const [availableSlots, setAvailableSlots] = useState<Specialty[]>([...specialtiesData]);
 
@@ -31,17 +31,17 @@ const SaturdaySpecialtiesPage: React.FC = () => {
       alert(`Você já selecionou um horário para ${time}.`);
       return;
     }
-  
+
     // Verificar se há vagas disponíveis
     const specialtyData = availableSlots.findIndex((s) => s.name === specialty);
     if (specialtyData === -1 || availableSlots[specialtyData].slots[time] === 0) {
       alert(`Sem vagas disponíveis para ${specialty} às ${time}.`);
       return;
     }
-  
+
     // Atualizar o estado de seleção
     setSelectedSlots([...selectedSlots, { name: specialty, time }]);
-  
+
     // Atualizar o estado de vagas
     const updatedSlots = [...availableSlots];
     updatedSlots[specialtyData].slots[time] -= 1;
@@ -62,20 +62,38 @@ const SaturdaySpecialtiesPage: React.FC = () => {
   };
 
   const navigate = useNavigate();
-
-  const handleNext = () => {
-    localStorage.setItem('saturdaySpecialties', JSON.stringify(selectedSlots));
-
-    navigate('/sandaySpecialties');
+  
+  const handleBack = () => {
+    navigate('/saturdaySpecialties');
   };
 
-  const handleBack = () => {
-    navigate('/registration');
+    // Função para gerar um código único de confirmação
+    const generateConfirmationCode = () => {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      let code = '';
+      for (let i = 0; i < 6; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        code += characters[randomIndex];
+      }
+      return code;
+    };
+  
+    const handleSubmit = () => {
+      // Gera o código de confirmação
+      localStorage.setItem('sundaySpecialties', JSON.stringify(selectedSlots));
+
+      const code = generateConfirmationCode();
+      
+      // Salva o código no localStorage para acessá-lo na página 4
+      localStorage.setItem('confirmationCode', code);
+      
+    // Navega para a página 4
+    navigate('/confirmationPage');
   };
 
   return (
     <div className="specialties-container">
-      <h1 className="title">Selecione as Especialidades do Sábado</h1>
+      <h1 className="title">Selecione as Especialidades do Domingo</h1>
       <div className="specialties-grid">
         {specialtiesData.map((specialty) => (
           <div key={specialty.name} className="specialty-card">
@@ -120,20 +138,20 @@ const SaturdaySpecialtiesPage: React.FC = () => {
       </div>
       <button
           type="button"
-          onClick={handleBack}
           className="submit-button"
+          onClick={handleBack}
         >
           Voltar
         </button>
       <button
           type="button"
-          onClick={handleNext}
           className="submit-button"
+          onClick={handleSubmit}
         >
-          Próximo
+          Enviar
         </button>
     </div>
   );
 };
 
-export default SaturdaySpecialtiesPage;
+export default SandaySpecialtiesPage;
