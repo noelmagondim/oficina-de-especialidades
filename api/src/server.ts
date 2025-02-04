@@ -1,17 +1,22 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { getEspecialidadesSaturday, getEspecialidadesSunday } from "../src/services/supabaseService";
-import { saveRegistration } from "../src/services/registrationService";
+import { getEspecialidadesSaturday, getEspecialidadesSunday } from "./services/supabaseService";
+import { saveRegistration } from "./services/registrationService";
 
 dotenv.config();
 
 const app = express();
+const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("API do site de inscrições está funcionando!");
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 app.get("/saturdaySpecialties", async (req, res) => {
