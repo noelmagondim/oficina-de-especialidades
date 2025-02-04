@@ -2,23 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "frontend/src/App.tsx",
-      "use": "@vercel/static"
+      "src": "frontend/package.json",
+      "use": "@vercel/node"
     },
     {
-      "src": "api/**/*.ts",
+      "src": "api/src/server.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/api/server.ts"
+      "dest": "/api/src/server.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "frontend/$1"
     }
-  ], 
-  "functions": {
-    "api/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
-  }
+  ]
 }
