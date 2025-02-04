@@ -15,10 +15,6 @@ app.get("/", (req, res) => {
   res.send("API do site de inscrições está funcionando!");
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-
 app.get("/saturdaySpecialties", async (req, res) => {
   try {
     const especialidadesSaturday = await getEspecialidadesSaturday();
@@ -50,4 +46,5 @@ app.post("/registration", async (req, res) => {
 
 // 🚀 Exportando corretamente para o Vercel
 import { VercelRequest, VercelResponse } from '@vercel/node';
+
 export default (req: VercelRequest, res: VercelResponse) => app(req, res);
