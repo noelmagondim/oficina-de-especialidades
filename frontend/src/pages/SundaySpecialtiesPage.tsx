@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/SaturdaySpecialtiesPage.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,43 +16,35 @@ const specialtiesData: Specialty[] = [
 
 const SundaySpecialtiesPage: React.FC = () => {
   const [selectedSlots, setSelectedSlots] = useState<{ name: string; time: string }[]>([]);
-  const [availableSlots, setAvailableSlots] = useState<Specialty[]>([...specialtiesData]);
+  const [availableSlots, setAvailableSlots] = useState<Specialty[]>(specialtiesData);
 
   const handleSelect = (specialty: string, time: string) => {
-    // Verificar se a especialidade já foi selecionada
     const isSpecialtySelected = selectedSlots.some((slot) => slot.name === specialty);
     if (isSpecialtySelected) {
       alert(`Você já selecionou um horário para ${specialty}.`);
       return;
     }
-    // Verificar se o horário já foi selecionado
     const isTimeTaken = selectedSlots.some((slot) => slot.time === time);
     if (isTimeTaken) {
       alert(`Você já selecionou um horário para ${time}.`);
       return;
     }
 
-    // Verificar se há vagas disponíveis
     const specialtyData = availableSlots.findIndex((s) => s.name === specialty);
     if (specialtyData === -1 || availableSlots[specialtyData].slots[time] === 0) {
       alert(`Sem vagas disponíveis para ${specialty} às ${time}.`);
       return;
     }
 
-    // Atualizar o estado de seleção
     setSelectedSlots([...selectedSlots, { name: specialty, time }]);
 
-    // Atualizar o estado de vagas
     const updatedSlots = [...availableSlots];
     updatedSlots[specialtyData].slots[time] -= 1;
     setAvailableSlots(updatedSlots);
   };
 
   const handleRemove = (specialty: string, time: string) => {
-    // Remover a seleção
     setSelectedSlots(selectedSlots.filter((slot) => !(slot.name === specialty && slot.time === time)));
-
-    // Repor a vaga
     const specialtyData = availableSlots.findIndex((s) => s.name === specialty);
     if (specialtyData !== -1) {
       const updatedSlots = [...availableSlots];
@@ -67,28 +59,37 @@ const SundaySpecialtiesPage: React.FC = () => {
     navigate('/saturdaySpecialties');
   };
 
-    // Função para gerar um código único de confirmação
-    const generateConfirmationCode = () => {
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      let code = '';
-      for (let i = 0; i < 6; i++) {
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        code += characters[randomIndex];
-      }
-      return code;
-    };
-  
-    const handleSubmit = () => {
-      // Gera o código de confirmação
-      localStorage.setItem('sundaySpecialties', JSON.stringify(selectedSlots));
+  const generateConfirmationCode = () => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = '';
+    for (let i = 0; i < 6; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      code += characters[randomIndex];
+    }
+    return code;
+  };
 
-      const code = generateConfirmationCode();
-      
-      // Salva o código no localStorage para acessá-lo na página 4
-      localStorage.setItem('confirmationCode', code);
-      
-    // Navega para a página 4
-    navigate('/confirmationPage');
+  const handleSubmit = () => {
+    localStorage.setItem('sundaySpecialties', JSON.stringify(selectedSlots));
+
+    const code = generateConfirmationCode();
+    localStorage.setItem('confirmationCode', code);
+
+    fetch('/api/saveSelections', {  // Alterar para a URL do seu servidor
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        selections: selectedSlots,
+        confirmationCode: code,
+      }),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      navigate('/confirmationPage');
+    })
+    .catch((error) => console.error('Erro ao enviar seleções:', error));
   };
 
   return (
@@ -137,19 +138,19 @@ const SundaySpecialtiesPage: React.FC = () => {
         )}
       </div>
       <button
-          type="button"
-          className="submit-button"
-          onClick={handleBack}
-        >
-          Voltar
-        </button>
+        type="button"
+        onClick={handleBack}
+        className="submit-button"
+      >
+        Voltar
+      </button>
       <button
-          type="button"
-          className="submit-button"
-          onClick={handleSubmit}
-        >
-          Enviar
-        </button>
+        type="button"
+        onClick={handleSubmit}
+        className="submit-button"
+      >
+        Enviar
+      </button>
     </div>
   );
 };

@@ -7,8 +7,12 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node"
-  }
+    "moduleResolution": "node",
+    "rootDir": "frontend/src", 
+  },
+  "include": [
+    "frontend/src/**/*"
+  ]
 }
 
 

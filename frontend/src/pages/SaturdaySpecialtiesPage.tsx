@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/SaturdaySpecialtiesPage.css'; 
 import { useNavigate } from 'react-router-dom';
 
@@ -7,52 +7,62 @@ type Specialty = {
   slots: Record<string, number>; // Horários e vagas disponíveis
 };
 
-const specialtiesData: Specialty[] = [
-  { name: 'Especialidade 1', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
-  { name: 'Especialidade 2', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
-  { name: 'Especialidade 3', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
-  { name: 'Especialidade 4', slots: { '14:00': 50, '15:00': 50, '16:00': 50, '17:00': 50 } },
-];
-
 const SaturdaySpecialtiesPage: React.FC = () => {
   const [selectedSlots, setSelectedSlots] = useState<{ name: string; time: string }[]>([]);
-  const [availableSlots, setAvailableSlots] = useState<Specialty[]>([...specialtiesData]);
+  const [availableSlots, setAvailableSlots] = useState<Specialty[]>([]);
+  const [loading, setLoading] = useState(true);  // Para mostrar o carregando
+  const [error, setError] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+
+  // Carregar dados da API ao montar o componente
+  useEffect(() => {
+    fetch('/api/saturdaySpecialties')  // Aqui está a rota que você precisa ajustar de acordo com a sua API
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Falha ao carregar dados da API');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setAvailableSlots(data); // Supondo que a API retorne os dados no formato correto
+        setLoading(false);  // Dados carregados
+      })
+      .catch((err) => {
+        setError(err.message);  // Caso tenha um erro ao carregar
+        setLoading(false);
+      });
+  }, []);
 
   const handleSelect = (specialty: string, time: string) => {
-    // Verificar se a especialidade já foi selecionada
     const isSpecialtySelected = selectedSlots.some((slot) => slot.name === specialty);
     if (isSpecialtySelected) {
       alert(`Você já selecionou um horário para ${specialty}.`);
       return;
     }
-    // Verificar se o horário já foi selecionado
+
     const isTimeTaken = selectedSlots.some((slot) => slot.time === time);
     if (isTimeTaken) {
       alert(`Você já selecionou um horário para ${time}.`);
       return;
     }
-  
-    // Verificar se há vagas disponíveis
+
     const specialtyData = availableSlots.findIndex((s) => s.name === specialty);
     if (specialtyData === -1 || availableSlots[specialtyData].slots[time] === 0) {
       alert(`Sem vagas disponíveis para ${specialty} às ${time}.`);
       return;
     }
-  
-    // Atualizar o estado de seleção
+
     setSelectedSlots([...selectedSlots, { name: specialty, time }]);
-  
-    // Atualizar o estado de vagas
+
     const updatedSlots = [...availableSlots];
     updatedSlots[specialtyData].slots[time] -= 1;
     setAvailableSlots(updatedSlots);
   };
 
   const handleRemove = (specialty: string, time: string) => {
-    // Remover a seleção
     setSelectedSlots(selectedSlots.filter((slot) => !(slot.name === specialty && slot.time === time)));
 
-    // Repor a vaga
     const specialtyData = availableSlots.findIndex((s) => s.name === specialty);
     if (specialtyData !== -1) {
       const updatedSlots = [...availableSlots];
@@ -61,11 +71,8 @@ const SaturdaySpecialtiesPage: React.FC = () => {
     }
   };
 
-  const navigate = useNavigate();
-
   const handleNext = () => {
     localStorage.setItem('saturdaySpecialties', JSON.stringify(selectedSlots));
-
     navigate('/sundaySpecialties');
   };
 
@@ -73,11 +80,19 @@ const SaturdaySpecialtiesPage: React.FC = () => {
     navigate('/registration');
   };
 
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+
+  if (error) {
+    return <div>Erro: {error}</div>;
+  }
+
   return (
     <div className="specialties-container">
       <h1 className="title">Selecione as Especialidades do Sábado</h1>
       <div className="specialties-grid">
-        {specialtiesData.map((specialty) => (
+        {availableSlots.map((specialty) => (
           <div key={specialty.name} className="specialty-card">
             <h2 className="specialty-name">{specialty.name}</h2>
             <div className="time-buttons">
