@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { getEspecialidadesSaturday, getEspecialidadesSunday } from "./services/supabaseService";
 import { saveRegistration } from "./services/registrationService";
+import { VercelRequest, VercelResponse } from '@vercel/node';
 
 dotenv.config();
 
@@ -43,8 +44,5 @@ app.post("/registration", async (req, res) => {
     res.status(500).send("Erro ao salvar inscrição");
   }
 });
-
-// 🚀 Exportando corretamente para o Vercel
-import { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default (req: VercelRequest, res: VercelResponse) => app(req, res);
