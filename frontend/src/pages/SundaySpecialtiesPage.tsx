@@ -14,7 +14,7 @@ const specialtiesData: Specialty[] = [
   { name: 'Especialidade 8', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
 ];
 
-const SandaySpecialtiesPage: React.FC = () => {
+const SundaySpecialtiesPage: React.FC = () => {
   const [selectedSlots, setSelectedSlots] = useState<{ name: string; time: string }[]>([]);
   const [availableSlots, setAvailableSlots] = useState<Specialty[]>([...specialtiesData]);
 
@@ -154,4 +154,4 @@ const SandaySpecialtiesPage: React.FC = () => {
   );
 };
 
-export default SandaySpecialtiesPage;
+export default SundaySpecialtiesPage;

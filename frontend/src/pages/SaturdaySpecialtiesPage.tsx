@@ -66,7 +66,7 @@ const SaturdaySpecialtiesPage: React.FC = () => {
   const handleNext = () => {
     localStorage.setItem('saturdaySpecialties', JSON.stringify(selectedSlots));
 
-    navigate('/sandaySpecialties');
+    navigate('/sundaySpecialties');
   };
 
   const handleBack = () => {
