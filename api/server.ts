@@ -1,10 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import { createClient } from "@supabase/supabase-js";
-import { Request, Response } from "express";
-import { getEspecialidadesSaturday, getEspecialidadesSunday } from "../src/services/supabaseService"; // Funções para buscar especialidades
-import { saveRegistration } from "../src/services/registrationService.ts"; // Função para salvar inscrição
+import { getEspecialidadesSaturday, getEspecialidadesSunday } from "../src/services/supabaseService";
+import { saveRegistration } from "../src/services/registrationService";
 
 dotenv.config();
 
@@ -12,13 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Rota para testar se o servidor está funcionando
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
   res.send("API do site de inscrições está funcionando!");
 });
 
-// Rota para obter as especialidades de sábado
-app.get("/saturdaySpecialties", async (req: Request, res: Response) => {
+app.get("/saturdaySpecialties", async (req, res) => {
   try {
     const especialidadesSaturday = await getEspecialidadesSaturday();
     res.json(especialidadesSaturday);
@@ -27,8 +23,7 @@ app.get("/saturdaySpecialties", async (req: Request, res: Response) => {
   }
 });
 
-// Rota para obter as especialidades de domingo
-app.get("/sundaySpecialties", async (req: Request, res: Response) => {
+app.get("/sundaySpecialties", async (req, res) => {
   try {
     const especialidadesSunday = await getEspecialidadesSunday();
     res.json(especialidadesSunday);
@@ -37,10 +32,9 @@ app.get("/sundaySpecialties", async (req: Request, res: Response) => {
   }
 });
 
-// Rota para salvar a inscrição
-app.post("/registration", async (req: Request, res: Response) => {
+app.post("/registration", async (req, res) => {
   const { nome, email, telefone, especialidade, horario } = req.body;
-  
+
   try {
     await saveRegistration(nome, email, telefone, especialidade, horario);
     res.status(201).send("Inscrição realizada com sucesso!");
@@ -49,5 +43,6 @@ app.post("/registration", async (req: Request, res: Response) => {
   }
 });
 
-// Porta do servidor (não usa app.listen no Vercel)
-export default app;
+// 🚀 Exportando corretamente para o Vercel
+import { VercelRequest, VercelResponse } from '@vercel/node';
+export default (req: VercelRequest, res: VercelResponse) => app(req, res);
