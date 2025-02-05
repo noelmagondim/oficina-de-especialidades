@@ -3,9 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const supabaseUrl = process.env.SUPABASE_URL!;
-console.log('Supabase URL:', process.env.SUPABASE_URL); // Verifique se a URL está sendo carregada
 const supabaseKey = process.env.SUPABASE_ANON_KEY!;
-console.log('Supabase Anon Key:', process.env.SUPABASE_ANON_KEY); // Verifique se a chave está sendo carregada
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export const getEspecialidadesSaturday = async () => {
@@ -14,6 +12,7 @@ export const getEspecialidadesSaturday = async () => {
     .select("*");
 
   if (error) {
+    console.error('Erro ao buscar especialidades:', error);
     throw error;
   }
   return data;
@@ -25,6 +24,7 @@ export const getEspecialidadesSunday = async () => {
     .select("*");
 
   if (error) {
+    console.error('Erro ao buscar especialidades:', error);
     throw error;
   }
   return data;
