@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../styles/SaturdaySpecialtiesPage.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -70,26 +70,10 @@ const SundaySpecialtiesPage: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    localStorage.setItem('sundaySpecialties', JSON.stringify(selectedSlots));
-
     const code = generateConfirmationCode();
     localStorage.setItem('confirmationCode', code);
 
-    fetch('/api/saveSelections', {  // Alterar para a URL do seu servidor
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        selections: selectedSlots,
-        confirmationCode: code,
-      }),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      navigate('/confirmationPage');
-    })
-    .catch((error) => console.error('Erro ao enviar seleções:', error));
+    navigate('/confirmationPage');
   };
 
   return (
