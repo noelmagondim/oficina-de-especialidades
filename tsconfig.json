@@ -1,14 +1,21 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }  // Certifique-se de que está aqui
-  ],
   "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
     "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "moduleResolution": "node"
-  }
+    "noEmit": true
+  },
+  "include": [
+    "frontend/src",
+    "backend/src"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
-
-

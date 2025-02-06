@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "vite": "^x.x.x",
+    "react": "^x.x.x",
+    "react-dom": "^x.x.x",
+    "@vitejs/plugin-react": "^x.x.x"
+  },
+  "devDependencies": {
+    "typescript": "^x.x.x"
+  }
+}
