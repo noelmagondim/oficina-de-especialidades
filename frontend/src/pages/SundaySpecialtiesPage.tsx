@@ -8,6 +8,11 @@ interface Specialty {
   slots: Record<string, number>; // Horários e vagas disponíveis
 }
 
+interface SelectedSlot {
+  name: string;
+  time: string;
+  }
+
 const SundaySpecialtiesPage: React.FC = () => {
   const [specialties, setSpecialties] = useState<Specialty[]>([]);
   const [loading, setLoading] = useState(true);
@@ -15,65 +20,69 @@ const SundaySpecialtiesPage: React.FC = () => {
   const [availableSlots, setAvailableSlots] = useState<Specialty[]>([]);
   const navigate = useNavigate();
 
-  // Carregar especialidades da API
   useEffect(() => {
+    const isNewRegistration = !localStorage.getItem("registrationData"); // Verifica se é uma nova inscrição
+  
+    if (isNewRegistration) {
+      localStorage.removeItem("sundaySpecialties"); // Limpa as especialidades do domingo se for uma nova inscrição
+    }
+  
     const fetchSpecialties = async () => {
       try {
         const response = await fetch('http://localhost:3000/api/sundaySpecialties');
         if (!response.ok) throw new Error('Erro ao buscar especialidades');
-        
-        const specialtiesData = await response.json();
+        const specialtiesData: Specialty[] = await response.json();
         setSpecialties(specialtiesData);
-        setAvailableSlots(specialtiesData); // Inicializa com os horários disponíveis
+        setAvailableSlots(specialtiesData);
       } catch (error) {
         console.error('Erro ao carregar especialidades do domingo:', error);
       } finally {
         setLoading(false);
       }
     };
-      fetchSpecialties();
+  
+    fetchSpecialties();
+  
+    // Carrega seleções do localStorage
+    const savedSelections = JSON.parse(localStorage.getItem("sundaySpecialties") || "[]");
+    setSelectedSlots(savedSelections);
   }, []);
   
-  if (loading) {
-    return <p>Carregando especialidades...</p>;
-  }
 
-  // Selecionar um horário
+  if (loading) return <p>Carregando especialidades...</p>;
+
   const handleSelect = (specialty: string, time: string) => {
-    // Verifica se já selecionou essa especialidade
     if (selectedSlots.some((slot) => slot.name === specialty)) {
       alert(`Você já selecionou um horário para ${specialty}.`);
       return;
     }
 
-    // Verifica se já selecionou esse horário para outra especialidade
     if (selectedSlots.some((slot) => slot.time === time)) {
       alert(`Você já selecionou um horário para ${time}.`);
       return;
     }
 
-    // Encontra a especialidade nos slots disponíveis
     const specialtyIndex = availableSlots.findIndex((s) => s.name === specialty);
     if (specialtyIndex === -1 || availableSlots[specialtyIndex].slots[time] === 0) {
       alert(`Sem vagas disponíveis para ${specialty} às ${time}.`);
       return;
     }
 
-    // Atualiza estado
-    setSelectedSlots([...selectedSlots, { name: specialty, time }]);
+    const updatedSelections = [...selectedSlots, { name: specialty, time }];
+    setSelectedSlots(updatedSelections);
+    localStorage.setItem("sundaySpecialties", JSON.stringify(updatedSelections));
 
-    // Atualiza as vagas disponíveis
     const updatedSlots = [...availableSlots];
     updatedSlots[specialtyIndex].slots[time] -= 1;
     setAvailableSlots(updatedSlots);
   };
 
-  // Remover um horário selecionado
   const handleRemove = (specialty: string, time: string) => {
-    setSelectedSlots(selectedSlots.filter((slot) => !(slot.name === specialty && slot.time === time)));
+    const updatedSelections = selectedSlots.filter((slot) => !(slot.name === specialty && slot.time === time));
+    setSelectedSlots(updatedSelections);
+    localStorage.setItem("sundaySpecialties", JSON.stringify(updatedSelections));
 
-  // Restaurar a vaga removida
-  const specialtyIndex = availableSlots.findIndex((s) => s.name === specialty);
+    const specialtyIndex = availableSlots.findIndex((s) => s.name === specialty);
     if (specialtyIndex !== -1) {
       const updatedSlots = [...availableSlots];
       updatedSlots[specialtyIndex].slots[time] += 1;
@@ -81,39 +90,52 @@ const SundaySpecialtiesPage: React.FC = () => {
     }
   };
 
-  // Voltar para a página anterior
   const handleBack = () => {
     navigate('/saturdaySpecialties');
   };
 
-  // Gera o código de confirmação
-  const generateConfirmationCode = () => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let code = '';
-    for (let i = 0; i < 6; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      code += characters[randomIndex];
-    }
-    return code;
-  };
-
-  // Ir para a próxima página
-
-  const handleSubmit = () => {
-    if (selectedSlots.length === 0) {
-      alert("Selecione pelo menos uma especialidade antes de continuar.");
+  const handleSubmit = async () => {
+    const registrationData = JSON.parse(localStorage.getItem("registrationData") || "{}");
+    const saturdaySpecialties = JSON.parse(localStorage.getItem("saturdaySpecialties") || "[]");
+    const sundaySpecialties = JSON.parse(localStorage.getItem("sundaySpecialties") || "[]");
+  
+    if (!registrationData.fullName || saturdaySpecialties.length === 0 || sundaySpecialties.length === 0) {
+      alert("Preencha todas as informações antes de continuar.");
       return;
     }
-    const confirmationData = {
-      sundaySpecialties: selectedSlots,  // Guarda as especialidades selecionadas
-      confirmationCode: generateConfirmationCode() // Gera um código de confirmação
+  
+    const requestData = {
+      fullName: registrationData.fullName,
+      email: registrationData.email,
+      phone: registrationData.phone,
+      age: registrationData.age,
+      district: registrationData.district,
+      club: registrationData.club,
+      saturdaySpecialties,
+      sundaySpecialties,
+      confirmationCode: Math.random().toString(36).substring(2, 8), // Código aleatório
     };
     
-    localStorage.setItem('sundaySpecialties', JSON.stringify(confirmationData));
-
-    navigate('/confirmationPage');
+    try {
+      const response = await fetch("http://localhost:3000/api/submitRegistration", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Erro ao enviar inscrição");
+      }
+  
+      alert("Inscrição realizada com sucesso!");
+      navigate("/confirmationPage");
+    } catch (error) {
+      console.error("Erro ao enviar inscrição:", error);
+      alert("Falha ao enviar inscrição.");
+    }
   };
-
 
   return (
     <div className="specialties-container">
@@ -160,20 +182,8 @@ const SundaySpecialtiesPage: React.FC = () => {
           <p>Nenhuma especialidade selecionada ainda.</p>
         )}
       </div>
-      <button
-        type="button"
-        onClick={handleBack}
-        className="submit-button"
-      >
-        Voltar
-      </button>
-      <button
-        type="button"
-        onClick={handleSubmit}
-        className="submit-button"
-      >
-        Enviar
-      </button>
+      <button type="button" onClick={handleBack} className="submit-button">Voltar</button>
+      <button type="button" onClick={handleSubmit} className="submit-button">Enviar</button>
     </div>
   );
 };

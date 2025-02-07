@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import InputMask from 'react-input-mask'; // Importando react-input-mask
-import '../styles/RegistrationPage.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import InputMask from "react-input-mask";
+import "../styles/RegistrationPage.css";
 
 const RegistrationPage: React.FC = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    age: '',
-    district: '',
-    club: '',
+    fullName: "",
+    email: "",
+    phone: "",
+    age: "",
+    district: "",
+    club: "",
   });
 
   const [errors, setErrors] = useState({
@@ -30,34 +30,30 @@ const RegistrationPage: React.FC = () => {
     setErrors({ ...errors, [name]: false });
   };
 
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const validatePhone = (phone: string) => {
-    const phoneRegex = /^\(\d{2}\) \d \d{4}-\d{4}$/; // Valida o formato (00) 0 0000-0000
-    return phoneRegex.test(phone);
+  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePhone = (phone: string) => /^\(\d{2}\) \d \d{4}-\d{4}$/.test(phone);
+  const validateAge = (age: string) => {
+    const numAge = parseInt(age, 10);
+    return !isNaN(numAge) && numAge > 0;
   };
 
   const handleNext = () => {
-    localStorage.setItem('fullName', formData.fullName);
-    localStorage.setItem('club', formData.club);
     const newErrors = {
-      fullName: formData.fullName.trim() === '',
+      fullName: formData.fullName.trim() === "",
       email: !validateEmail(formData.email),
       phone: !validatePhone(formData.phone),
-      age: formData.age.trim() === '',
-      district: formData.district.trim() === '',
-      club: formData.club.trim() === '',
+      age: !validateAge(formData.age),
+      district: formData.district.trim() === "",
+      club: formData.club.trim() === "",
     };
 
     setErrors(newErrors);
+    if (Object.values(newErrors).some((error) => error)) return;
 
-    const hasErrors = Object.values(newErrors).some((error) => error);
-    if (!hasErrors) {
-      navigate('/saturdaySpecialties');
-    }
+    // Salvando todas as informações no `localStorage`
+    localStorage.setItem("registrationData", JSON.stringify(formData));
+
+    navigate("/saturdaySpecialties");
   };
 
   const districts = [
@@ -73,9 +69,9 @@ const RegistrationPage: React.FC = () => {
       <h1 className="title">Formulário de Inscrição</h1>
       <form className="form-container">
         {[
-          { label: 'Nome Completo', name: 'fullName', type: 'text' },
-          { label: 'E-mail', name: 'email', type: 'email' },
-          { label: 'Idade', name: 'age', type: 'number' },
+          { label: "Nome Completo", name: "fullName", type: "text" },
+          { label: "E-mail", name: "email", type: "email" },
+          { label: "Idade", name: "age", type: "number" },
         ].map((field) => (
           <div key={field.name} className="form-group">
             <label className="label">{field.label}</label>
@@ -84,11 +80,10 @@ const RegistrationPage: React.FC = () => {
               name={field.name}
               value={(formData as any)[field.name]}
               onChange={handleChange}
-              className={`input ${errors[field.name as keyof typeof errors] ? 'input-error' : ''}`}
+              className={`input ${errors[field.name as keyof typeof errors] ? "input-error" : ""}`}
             />
-            {field.name === 'email' && errors.email && (
-              <span className="error-message">Informe um e-mail válido</span>
-            )}
+            {field.name === "email" && errors.email && <span className="error-message">Informe um e-mail válido</span>}
+            {field.name === "age" && errors.age && <span className="error-message">Informe uma idade válida</span>}
           </div>
         ))}
 
@@ -99,11 +94,9 @@ const RegistrationPage: React.FC = () => {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
-            className={`input ${errors.phone ? 'input-error' : ''}`}
+            className={`input ${errors.phone ? "input-error" : ""}`}
           />
-          {errors.phone && (
-            <span className="error-message">Informe um telefone válido no formato (00) 0 0000-0000</span>
-          )}
+          {errors.phone && <span className="error-message">Informe um telefone válido</span>}
         </div>
 
         <div className="form-group">
@@ -113,7 +106,7 @@ const RegistrationPage: React.FC = () => {
             name="district"
             value={formData.district}
             onChange={handleChange}
-            className={`input ${errors.district ? 'input-error' : ''}`}
+            className={`input ${errors.district ? "input-error" : ""}`}
           >
             <option value="">Selecione seu distrito</option>
             {districts.map((district) => (
@@ -132,7 +125,7 @@ const RegistrationPage: React.FC = () => {
               name="club"
               value={formData.club}
               onChange={handleChange}
-              className={`input ${errors.club ? 'input-error' : ''}`}
+              className={`input ${errors.club ? "input-error" : ""}`}
             >
               <option value="">Selecione seu Clube</option>
               {selectedDistrict.clubs.map((club) => (
@@ -144,11 +137,7 @@ const RegistrationPage: React.FC = () => {
           </div>
         )}
 
-        <button
-          type="button"
-          onClick={handleNext}
-          className="submit"
-        >
+        <button type="button" onClick={handleNext} className="submit">
           Próximo
         </button>
       </form>

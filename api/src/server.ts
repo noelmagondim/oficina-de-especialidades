@@ -21,7 +21,8 @@ app.get("/api/saturdaySpecialties", async (req, res) => {
     const especialidadesSaturday = await getEspecialidadesSaturday();
     res.json(especialidadesSaturday);
   } catch (error) {
-    res.status(500).send("Erro ao obter especialidades de sábado");
+    console.error("Erro ao obter especialidades de sábado:", error);
+    res.status(500).json({ error: "Erro ao obter especialidades de sábado" });
   }
 });
 
@@ -30,17 +31,37 @@ app.get("/api/sundaySpecialties", async (req, res) => {
     const especialidadesSunday = await getEspecialidadesSunday();
     res.json(especialidadesSunday);
   } catch (error) {
-    res.status(500).send("Erro ao obter especialidades de domingo");
+    console.error("Erro ao obter especialidades de domingo:", error);
+    res.status(500).json({ error: "Erro ao obter especialidades de domingo" });
   }
 });
 
-app.post("/api/registration", async (req, res) => {
-  const { nome, email, telefone, especialidade, horario } = req.body;
+app.post("/api/submitRegistration", async (req: any, res:any ) => {
   try {
-    await saveRegistration(nome, email, telefone, especialidade, horario);
-    res.status(201).send("Inscrição realizada com sucesso!");
+    const { fullName, email, phone, age, district, club, saturdaySpecialties, sundaySpecialties, confirmationCode } = req.body;
+
+    if (!fullName || !email || !phone || !age || !district || !club || !saturdaySpecialties || !sundaySpecialties || !confirmationCode) {
+      return res.status(400).json({ error: "Todos os campos são obrigatórios." });
+    }
+
+    console.log("📩 Recebendo dados:", req.body);
+
+    await saveRegistration({
+      fullName,
+      email,
+      phone,
+      age,
+      district,
+      club,
+      saturdaySpecialties,
+      sundaySpecialties,
+      confirmationCode
+    });
+
+    res.status(201).json({ message: "Inscrição realizada com sucesso!" });
   } catch (error) {
-    res.status(500).send("Erro ao salvar inscrição");
+    console.error("Erro ao salvar inscrição:", error);
+    res.status(500).json({ error: "Erro ao salvar inscrição" });
   }
 });
 
