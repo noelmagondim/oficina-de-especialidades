@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import InputMask from "react-input-mask";
+import axios from "axios";
 import "../styles/RegistrationPage.css";
 
 const RegistrationPage: React.FC = () => {
@@ -22,12 +23,30 @@ const RegistrationPage: React.FC = () => {
     club: false,
   });
 
+  const [districts, setDistricts] = useState<{ id: number; name: string; clubs: { id: number; name: string }[] }[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchDistricts = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/api/districts"); // Ajuste a URL conforme necessário
+        setDistricts(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar distritos:", error);
+      }
+    };
+
+    fetchDistricts();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: false });
+
+    if (name === "district") {
+      setFormData((prev) => ({ ...prev, club: "" })); // Limpa o clube ao trocar de distrito
+    }
   };
 
   const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -50,19 +69,11 @@ const RegistrationPage: React.FC = () => {
     setErrors(newErrors);
     if (Object.values(newErrors).some((error) => error)) return;
 
-    // Salvando todas as informações no `localStorage`
     localStorage.setItem("registrationData", JSON.stringify(formData));
-
     navigate("/saturdaySpecialties");
   };
 
-  const districts = [
-    { name: "Alto da Conceição", clubs: ["Águia Real", "Arautos do Advento", "Nova Jerusalém"] },
-    { name: "Central", clubs: ["Felinos", "Leão de Judá", "Pena Inspirada", "Tribo de Judá"] },
-    { name: "Cohab", clubs: ["Exército de Deus", "Filhos do Altíssimo", "Filhos de Israel", "Fortaleza Suprema", "Guerreiros do Altíssimo", "Guerreiros do Alto", "Kerygma", "Valentes da Serra", "Rocha Firme"] },
-  ];
-
-  const selectedDistrict = districts.find((d) => d.name === formData.district);
+  const selectedDistrict = districts.find((d) => d.id === parseInt(formData.district));
 
   return (
     <div className="registration-container">
@@ -110,7 +121,7 @@ const RegistrationPage: React.FC = () => {
           >
             <option value="">Selecione seu distrito</option>
             {districts.map((district) => (
-              <option key={district.name} value={district.name}>
+              <option key={district.id} value={district.id}>
                 {district.name}
               </option>
             ))}
@@ -129,8 +140,8 @@ const RegistrationPage: React.FC = () => {
             >
               <option value="">Selecione seu Clube</option>
               {selectedDistrict.clubs.map((club) => (
-                <option key={club} value={club}>
-                  {club}
+                <option key={club.id} value={club.id}>
+                  {club.name}
                 </option>
               ))}
             </select>

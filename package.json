@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "@vitejs/plugin-react": "^x.x.x",
+    "axios": "^1.7.9",
     "react": "^x.x.x",
     "react-dom": "^x.x.x",
     "vite": "^x.x.x"

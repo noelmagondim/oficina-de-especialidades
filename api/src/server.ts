@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { getEspecialidadesSaturday, getEspecialidadesSunday } from "./services/supabaseService";
 import { saveRegistration } from "./services/registrationService";
+import { getDistrictsAndClubs } from "../src/services/supabaseService";
 
 dotenv.config();
 
@@ -64,6 +65,12 @@ app.post("/api/submitRegistration", async (req: any, res:any ) => {
     res.status(500).json({ error: "Erro ao salvar inscrição" });
   }
 });
+
+app.get("/api/districts", async (req, res) => {
+  const districts = await getDistrictsAndClubs();
+  res.json(districts);
+});
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

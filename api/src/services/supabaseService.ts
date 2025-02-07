@@ -46,3 +46,27 @@ export const saveRegistration = async (registration: RegistrationData) => {
     throw error;
   }
 };
+// linha nova
+// Função para buscar distritos e seus clubes
+export const getDistrictsAndClubs = async () => {
+  const { data, error } = await supabase
+    .from("distritos")
+    .select("id, name, clubes (id, name)")
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("Erro ao buscar distritos e clubes:", error);
+    return [];
+  }
+
+  return data.map((district) => ({
+    id: district.id,
+    name: district.name,
+    clubs: district.clubes.map((club: { id: number; name: string }) => ({
+      id: club.id,
+      name: club.name,
+    })),
+  }));
+};
+
+export default supabase;
