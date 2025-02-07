@@ -42,36 +42,38 @@ const SundaySpecialtiesPage: React.FC = () => {
     };
   
     fetchSpecialties();
-  
-    // Carrega seleções do localStorage
-    const savedSelections = JSON.parse(localStorage.getItem("sundaySpecialties") || "[]");
-    setSelectedSlots(savedSelections);
   }, []);
   
 
   if (loading) return <p>Carregando especialidades...</p>;
 
+  // Selecionar um horário
   const handleSelect = (specialty: string, time: string) => {
+    // Verifica se já selecionou essa especialidade
     if (selectedSlots.some((slot) => slot.name === specialty)) {
       alert(`Você já selecionou um horário para ${specialty}.`);
       return;
     }
 
+    // Verifica se já selecionou esse horário para outra especialidade
     if (selectedSlots.some((slot) => slot.time === time)) {
       alert(`Você já selecionou um horário para ${time}.`);
       return;
     }
 
+    // Encontra a especialidade nos slots disponíveis
     const specialtyIndex = availableSlots.findIndex((s) => s.name === specialty);
     if (specialtyIndex === -1 || availableSlots[specialtyIndex].slots[time] === 0) {
       alert(`Sem vagas disponíveis para ${specialty} às ${time}.`);
       return;
     }
 
+    // Atualiza estado
     const updatedSelections = [...selectedSlots, { name: specialty, time }];
     setSelectedSlots(updatedSelections);
     localStorage.setItem("sundaySpecialties", JSON.stringify(updatedSelections));
-
+    
+    // Atualiza as vagas disponíveis
     const updatedSlots = [...availableSlots];
     updatedSlots[specialtyIndex].slots[time] -= 1;
     setAvailableSlots(updatedSlots);
@@ -81,7 +83,8 @@ const SundaySpecialtiesPage: React.FC = () => {
     const updatedSelections = selectedSlots.filter((slot) => !(slot.name === specialty && slot.time === time));
     setSelectedSlots(updatedSelections);
     localStorage.setItem("sundaySpecialties", JSON.stringify(updatedSelections));
-
+    
+    // Restaurar a vaga removida
     const specialtyIndex = availableSlots.findIndex((s) => s.name === specialty);
     if (specialtyIndex !== -1) {
       const updatedSlots = [...availableSlots];
