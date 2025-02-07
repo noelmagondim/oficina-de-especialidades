@@ -1,64 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/SaturdaySpecialtiesPage.css';
 import { useNavigate } from 'react-router-dom';
 
-type Specialty = {
+interface Specialty {
+  id: number;
   name: string;
   slots: Record<string, number>; // Horários e vagas disponíveis
-};
-
-const specialtiesData: Specialty[] = [
-  { name: 'Especialidade 5', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
-  { name: 'Especialidade 6', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
-  { name: 'Especialidade 7', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
-  { name: 'Especialidade 8', slots: { '08:00': 50, '09:00': 50, '10:00': 50, '11:00': 50 } },
-];
+}
 
 const SundaySpecialtiesPage: React.FC = () => {
+  const [specialties, setSpecialties] = useState<Specialty[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedSlots, setSelectedSlots] = useState<{ name: string; time: string }[]>([]);
-  const [availableSlots, setAvailableSlots] = useState<Specialty[]>(specialtiesData);
+  const [availableSlots, setAvailableSlots] = useState<Specialty[]>([]);
+  const navigate = useNavigate();
 
+  // Carregar especialidades da API
+  useEffect(() => {
+    const fetchSpecialties = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/sundaySpecialties');
+        if (!response.ok) throw new Error('Erro ao buscar especialidades');
+        
+        const specialtiesData = await response.json();
+        setSpecialties(specialtiesData);
+        setAvailableSlots(specialtiesData); // Inicializa com os horários disponíveis
+      } catch (error) {
+        console.error('Erro ao carregar especialidades do domingo:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+      fetchSpecialties();
+  }, []);
+  
+  if (loading) {
+    return <p>Carregando especialidades...</p>;
+  }
+
+  // Selecionar um horário
   const handleSelect = (specialty: string, time: string) => {
-    const isSpecialtySelected = selectedSlots.some((slot) => slot.name === specialty);
-    if (isSpecialtySelected) {
+    // Verifica se já selecionou essa especialidade
+    if (selectedSlots.some((slot) => slot.name === specialty)) {
       alert(`Você já selecionou um horário para ${specialty}.`);
       return;
     }
-    const isTimeTaken = selectedSlots.some((slot) => slot.time === time);
-    if (isTimeTaken) {
+
+    // Verifica se já selecionou esse horário para outra especialidade
+    if (selectedSlots.some((slot) => slot.time === time)) {
       alert(`Você já selecionou um horário para ${time}.`);
       return;
     }
 
-    const specialtyData = availableSlots.findIndex((s) => s.name === specialty);
-    if (specialtyData === -1 || availableSlots[specialtyData].slots[time] === 0) {
+    // Encontra a especialidade nos slots disponíveis
+    const specialtyIndex = availableSlots.findIndex((s) => s.name === specialty);
+    if (specialtyIndex === -1 || availableSlots[specialtyIndex].slots[time] === 0) {
       alert(`Sem vagas disponíveis para ${specialty} às ${time}.`);
       return;
     }
 
+    // Atualiza estado
     setSelectedSlots([...selectedSlots, { name: specialty, time }]);
 
+    // Atualiza as vagas disponíveis
     const updatedSlots = [...availableSlots];
-    updatedSlots[specialtyData].slots[time] -= 1;
+    updatedSlots[specialtyIndex].slots[time] -= 1;
     setAvailableSlots(updatedSlots);
   };
 
+  // Remover um horário selecionado
   const handleRemove = (specialty: string, time: string) => {
     setSelectedSlots(selectedSlots.filter((slot) => !(slot.name === specialty && slot.time === time)));
-    const specialtyData = availableSlots.findIndex((s) => s.name === specialty);
-    if (specialtyData !== -1) {
+
+  // Restaurar a vaga removida
+  const specialtyIndex = availableSlots.findIndex((s) => s.name === specialty);
+    if (specialtyIndex !== -1) {
       const updatedSlots = [...availableSlots];
-      updatedSlots[specialtyData].slots[time] += 1;
+      updatedSlots[specialtyIndex].slots[time] += 1;
       setAvailableSlots(updatedSlots);
     }
   };
 
-  const navigate = useNavigate();
-  
+  // Voltar para a página anterior
   const handleBack = () => {
     navigate('/saturdaySpecialties');
   };
 
+  // Gera o código de confirmação
   const generateConfirmationCode = () => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let code = '';
@@ -69,19 +97,30 @@ const SundaySpecialtiesPage: React.FC = () => {
     return code;
   };
 
+  // Ir para a próxima página
+
   const handleSubmit = () => {
-    const code = generateConfirmationCode();
-    localStorage.setItem('confirmationCode', code);
+    if (selectedSlots.length === 0) {
+      alert("Selecione pelo menos uma especialidade antes de continuar.");
+      return;
+    }
+    const confirmationData = {
+      sundaySpecialties: selectedSlots,  // Guarda as especialidades selecionadas
+      confirmationCode: generateConfirmationCode() // Gera um código de confirmação
+    };
+    
+    localStorage.setItem('sundaySpecialties', JSON.stringify(confirmationData));
 
     navigate('/confirmationPage');
   };
+
 
   return (
     <div className="specialties-container">
       <h1 className="title">Selecione as Especialidades do Domingo</h1>
       <div className="specialties-grid">
-        {specialtiesData.map((specialty) => (
-          <div key={specialty.name} className="specialty-card">
+        {availableSlots.map((specialty) => (
+          <div key={specialty.id} className="specialty-card">
             <h2 className="specialty-name">{specialty.name}</h2>
             <div className="time-buttons">
               {Object.keys(specialty.slots).map((time) => {
